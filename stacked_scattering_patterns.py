@@ -68,6 +68,7 @@ for i in these_files:
     match=[s for s in files if i in s]
     matches.append(match[0])
 
+last_y=0
 for j in range(len(matches)):
     table=np.genfromtxt(matches[j],skip_header=10,delimiter=',')
     
@@ -75,32 +76,27 @@ for j in range(len(matches)):
     y_data=table[np.intersect1d(np.where(table[0:,0]>lower_limit),np.where(table[0:,0]<upper_limit)),1]
     
     norm=(y_data/np.max(y_data))*10*(j+1)
-    
+
     if j==0:
         plt.plot(x_data,norm,label=labels[j])
-        last_x=x_data
-        last_y=norm
+        last_y=max(norm)
     
     elif j>0:
-        last_norm=(last_y/np.max(last_y))*10*j
-        last_max=np.max(last_norm)
         this_min=np.min(norm)
         
-        if last_max>this_min:
-            norm_new=norm+(last_max-this_min)+5
+        if last_y>this_min:
+            norm_new=norm+(last_y-this_min)+5
             plt.plot(x_data,norm_new,label=labels[j])
-            last_x=x_data
-            last_y=norm_new
+            last_y=max(norm_new)
             
         else:
             plt.plot(x_data,norm,label=labels[j])
-            last_x=x_data
-            last_y=norm
+            last_y=max(norm)
 
-plt.legend(ncol=no_legend_columns,bbox_to_anchor=(legend_x_position,legend_y_position), frameon=frame_variable)
+lgd=plt.legend(ncol=no_legend_columns,bbox_to_anchor=(legend_x_position,legend_y_position), frameon=frame_variable)
 plt.xlabel('$q$ (Å$^{-1}$)')
 plt.ylabel('Intensity (A.U.)')
 plt.tight_layout()
 if save_fig==True:
-    plt.savefig(save_fig_in+fig_name+fig_extension,dpi=fig_quality)    
+    plt.savefig(save_fig_in+fig_name+fig_extension,dpi=fig_quality, bbox_extra_artists=(lgd,), bbox_inches='tight')    
 plt.show()
