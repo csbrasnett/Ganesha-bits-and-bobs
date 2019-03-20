@@ -17,8 +17,8 @@ buffer - the log book code for the buffer for the experiment.
 '''
 in_dir='your/path/here/'
 
-empty=13448
-buffer=13497
+empty= log_book_number_1
+buffer= log_book_number_2
 
 '''
 end of editable section
@@ -77,8 +77,8 @@ for i in sample_files:
     #subtract the empty off the sample
     sample_subtraction_1=np.zeros(np.shape(data))
     sample_subtraction_1[0:,0]=data[0:,0]
-    sample_subtraction_1[0:,1]=data[0:,1]-buffer_array[0:,1]
-    sample_subtraction_1[0:,2]=np.sqrt((data[0:,2]**2)+(buffer_array[0:,2]**2))
+    sample_subtraction_1[0:,1]=data[0:,1]-empty_array[0:,1]
+    sample_subtraction_1[0:,2]=np.sqrt((data[0:,2]**2)+(empty_array[0:,2]**2))
     
     #subtract the corrected buffer off the corrected sample
     sample_subtraction_2=np.zeros(np.shape(sample_subtraction_1))
